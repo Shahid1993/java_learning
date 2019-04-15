@@ -1,4 +1,4 @@
-### [SpringBoot with LogBack creating LOG_PATH_IS_UNDEFINED folder](https://stackoverflow.com/questions/25251983/springboot-with-logback-creating-log-path-is-undefined-folder)
+### 1. [SpringBoot with LogBack creating LOG_PATH_IS_UNDEFINED folder](https://stackoverflow.com/questions/25251983/springboot-with-logback-creating-log-path-is-undefined-folder)
 
 In your case `LOG_PATH` is not defined on startup. You should use `${LOG_PATH:-.}` instead , See .  
 
