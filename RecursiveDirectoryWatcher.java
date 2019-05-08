@@ -1,5 +1,6 @@
 package net.pdfix;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,6 +38,9 @@ import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.sun.nio.file.SensitivityWatchEventModifier;
 
@@ -196,6 +200,18 @@ public class RecursiveDirectoryWatcher {
 			System.out.println(xmlFile.getName());
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			dBuilder.setEntityResolver(new EntityResolver() {
+			    @Override
+			    public InputSource resolveEntity(String publicId, String systemId)
+			            throws SAXException, IOException {
+			        if (systemId.contains("pdf2xml.dtd")) {
+			            return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
+			        } else
+			           return null;
+			    }
+			});
+			
 			Document doc = dBuilder.parse(xmlFile);
 
 			XPathFactory xpathFactory = XPathFactory.newInstance();
